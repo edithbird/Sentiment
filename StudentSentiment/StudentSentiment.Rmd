@@ -18,6 +18,8 @@ link-citations: yes
 library(tufte)
 library(ggplot2)
 library(formatR)
+library(tidyverse)
+library(knitr)
 # invalidate cache when the tufte version changes
 knitr::opts_chunk$set(
 	echo = FALSE,
@@ -31,7 +33,7 @@ options(htmltools.dir.version = FALSE)
 
 
 `r newthought('Intro text here')` Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here. In general,
-    \href{https://blog.adstage.io/facebook-ads-benchmarks}{{\color{blue}{\underline{FB Newsfeed }}}} CTR overall experienced a 24% drop from July, 2017 - July, 2018.
+    \href{https://encoura.org/prospective-student-mindsets/}{{\color{blue}{\underline{Prospective Student Mindsets }}}} is put together by Encoura.
 
 
 ```{r}
@@ -41,39 +43,218 @@ Data_2 <- read.csv("C:/Users/christine.iyer/Box/Student_Sentiment/StudentSentime
 Data_3 <- read.csv("C:/Users/christine.iyer/Box/Student_Sentiment/StudentSentiment/Data/20200224_Prospects_009762_SO-00176008_2020_2021_grads_winter_2_21_2020 (2).csv", header = T, stringsAsFactors = F)
 ```
 
+
 ```{r}
 AllData <- rbind.data.frame(Data_3, Data_2, Data_1)
-dim(AllData)
 ```
 
+```{r}
+
+SR <- AllData %>% filter (Graduation.Year == 2020)
+
+```
+
+```{r}
+SFData <- read.csv("C:/Users/christine.iyer/Box/Student_Sentiment/StudentSentiment/Data/SFData.csv")
+SFData <- SFData %>% filter(App.Application.Date != "")
+```
+
+
+```{r}
+trythis <- merge(AllData, SFData, by = "Email" )
+```
+
+```{r}
+trythis <- trythis %>% mutate(Mindset = ifelse(Mindset == 1, "Career Pragmatists", ifelse(Mindset == 2, "Career through Academics", ifelse(Mindset == 3, "Experiential Interests", ifelse(Mindset == 4, "Exploration and Meaning", ifelse(Mindset == 5, "Grad School Bound", "Social Focus"))))))
+```
+
+
+```{r}
+
+
+
+kable(trythis %>%
+        group_by(Mindset) %>% 
+      summarise(Apps =  n(), 
+                `Percent of Total` =paste0(round(100*Apps/61,0),'%')) %>% 
+      arrange(desc(Apps)))
+```
 
 # Findings
 
+
+
+
+
+
+
+
+
+
+# __Mindsets Defined__
+
+
+## __Grad School Bound__: 10% (USM 33%)
+
+For these students, graduate or professional school is the goal. Scientific and technical skills and undergraduate research are key experiences, and academic quality and academic environment drive choice.
+
+
+__The Opening Conversation__
+
+* Show that your institution has the academics/research rigor that will land them in the graduate school of their choice
+* Show evidence of successful graduate school placements 
+* Demonstrate opportunities to build research skills under the guidance of faculty
+
+__Potential Blind Spots__
+
+* They often don’t factor affordability into the equation early on
+* There is a potential impact of student loans on their future plans for graduate school
+* They have less engagement with the wider opportunities of undergraduate education
+
+__Opportunities for Support__
+
+* Map out academic, research, and internship experiences that build grad opportunities 
+* May eschew other important experiences and risk isolation or burnout as a result
+* Help them understand how a more well-rounded experience will benefit them
+
+## __Career Through Academics__: 14% (USM 21%)
+
+These students are looking for a long-term career and see strong academics integrated with career preparation as the path. They are level-headed decision-makers.
+
+__The Opening Conversation__
+
+* All the major experiences of a college bear on their eventual outcome
+* Show a direct connection between major and career
+* Demonstrate an integrated experience of academics, career, and social interaction
+
+__Potential Blind Spots__
+
+* They are so focused on ultimate goal, that they might miss out on serendipitous learning 
+* Show them that these experiences are not necessarily distractions, but can enrich, and enhance
+
+__Opportunities for Support__
+
+* Connect academic program strongly to their career goals
+* If plans aren’t working out, they’ll need help finding a new focus
+
+## __Exploration and Meaning__: 17% (USM 15%)
+
+These students want to make an impact on the world and are wide open to liberal arts outcomes. They are global butterflies and could make an impassioned choice
+
+__The Opening Conversation__
+
+* Opportunities should be designed to help students make a personal impact on the world 
+* Study abroad and global options will have great appeal
+* They are looking for traditional liberal arts outcomes
+
+__Potential Blind Spots__
+
+* They give unrealistic attention to career outcomes. 
+* Affordability is not top of mind
+* They are at risk of making an impassioned choice without considering ROI
+
+__Opportunities for Support__
+
+* Coach them to direct their attention to making an impact on themselves
+* Provide career advising that balances reality with exploration and opportunity
+* Take their open, searching personality into account
+
+
+## __Career Pragmatists__: 21%(USM 13%)
+
+These students are looking for immediate ROI. They are highly sensitive to affordability, and are looking for the job right away. They are not necessarily focused on career.
+
+__The Opening Conversation__
+
+* Demonstrate an immediate return on investment 
+* They want an affordable education in a supportive community setting that leads to an immediate job
+* They may need a flexible program to accommodate a need to work
+
+__Potential Blind Spots__
+
+* They may overlook the importance of academics
+* They don’t need to hear about rigor or prestige
+* Educate them on the contribution of academic experiences to their career
+
+__Opportunities for Support__
+
+* Work and affordability issues could sidetrack them
+* Introduce long-term benefits to career beyond the all-important first job  
+* Provide strong academic advising
+* Provide career advising to get the most out of their work experience
+
+
+
+
+## __Experiential Interest__: 19% (USM 8%)
+
+These students desire a career and want to get hands on with internships and employment. They are also highly sensitive to affordability.
+
+__The Opening Conversation__
+
+* Speak to experiential learning opportunities that lead to career-focused outcomes
+* They will appreciate clearly laid out programs and degree plans
+* Remember that they are highly sensitive to affordability 
+
+__Potential Blind Spots__
+
+* They consider academic coursework secondary 
+* They aren’t paying much attention to the social aspects of college
+* Work to heighten their understanding of the importance academic and social to success in college
+
+__Opportunities for Support__
+
+* They may run into trouble if they find themselves off their intended program path
+* Help conscientious, but closed, students negotiate to another path if this arises
+
+
+
+## __Social Focus__: 18% (USM 8%)
+
+These students want to gain meaningful friendships (and a job would be nice too!). They want to engage in every connecting activity possible and the social environment is most critical to choice.
+
+__The Opening Conversation__
+
+* Showcase the defining aspects of your social environment
+* Show how they can create lasting friendships 
+* Support connections and social facility that drive success in the workplace
+
+__Potential Blind Spots__
+
+* They think they will get a good job after graduation almost by osmosis
+* They aren’t very concerned about academics and career preparation 
+* Instill an understanding of the importance of these key factors in success
+
+__Opportunities for Support__
+
+* Recognize a lesser degree of emotional stability and conscientiousness
+* They may need more help getting on track with an academic and career plan 
+* If social transition goes south, they are at high risk
+
+
+
+
+
+
+# Other Findings
+
+Profit Profit Profit
+```{r}
+kable(trythis %>% group_by(`Application Status` = App.Application.Status) %>% summarise(Apps =  n())%>% arrange(desc(Apps)))
+kable(trythis %>% group_by(State = State.Province) %>% summarise(Apps =  n())%>% arrange(desc(Apps)))
+kable(trythis %>% group_by(County = County.Name) %>% summarise(Apps =  n())%>% arrange(desc(Apps)))
+kable(trythis %>% group_by(Gender = Gender.x) %>% summarise(Apps =  n())%>% arrange(desc(Apps)))
+kable(trythis %>% group_by(High.School.Name) %>% summarise(Apps =  n())%>% arrange(desc(Apps)))
+kable(trythis %>% group_by(Specialization = Specialized.College.1) %>% summarise(Apps =  n())%>% arrange(desc(Apps)))
+kable(trythis %>% group_by(`HS Track` = HS.Course.Track.1) %>% summarise(Apps =  n())%>% arrange(desc(Apps)))
+kable(trythis %>% group_by(`College Activity` = College.Activity.1) %>% summarise(Apps =  n()) %>% arrange(desc(Apps)))
+kable(trythis %>% group_by(`College Activity2` =College.Activity.2) %>% summarise(Apps =  n()) %>% arrange(desc(Apps)))
+kable(trythis %>% group_by(`College Sport` = College.Sport.1) %>% summarise(Apps =  n()) %>% arrange(desc(Apps)))
+kable(trythis %>% group_by(`Academic Interest`=Academic.Interest.1) %>% summarise(Apps =  n()) %>% arrange(desc(Apps)))
+kable(trythis %>% group_by(`Career Interest` = Career.Interest.1) %>% summarise(Apps =  n()) %>% arrange(desc(Apps)))
+```
+
 ## Plots
-
-
-
-```{r fig-fullwidth, echo=FALSE, fig.cap="This is a full width plot.", fig.fullwidth=TRUE, fig.height=2, fig.width=10, message=FALSE, cache=TRUE}
-
-#代码段选项`fig.fullwidth = TRUE`可以使得一幅图占用全部页宽，例如：
-ggplot(diamonds, aes(carat, price)) + geom_smooth() +
-  facet_grid(~ cut)
-```
-
-## Margin Figures
-
-Images and graphics play an integral role in Tufte's work. To place figures in the margin you can use the **knitr** chunk option `fig.margin = TRUE`. For example:
-
-```{r fig-margin, fig.margin = TRUE, fig.cap = "MPG vs horsepower, colored by transmission.", fig.width=3.5, fig.height=3.5, cache=TRUE, message=FALSE}
-
-mtcars2 <- mtcars
-mtcars2$am <- factor(
-  mtcars$am, labels = c('automatic', 'manual')
-)
-ggplot(mtcars2, aes(hp, mpg, color = am)) +
-  geom_point() + geom_smooth() +
-  theme(legend.position = 'bottom')
-```
 
 
 
@@ -85,61 +266,8 @@ If you'd like to place ancillary information in the margin without the sidenote 
 
 
 
-
-
-## Tables
-
-You can use the `kable()` function from the **knitr** package to format tables that integrate well with the rest of the Tufte handout style. The table captions are placed in the margin like figures in the HTML output.
-
-Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here.
-Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here.
-Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here.
-
-
-
-
-```{r}
-knitr::kable(
-  mtcars[1:6, 1:6], caption = 'A subset of mtcars.'
-)
-```
-
-
-```{marginfigure, echo = TRUE}
-Notice that there is no number preceding the note. $x \in [a, b]$有
-$$\frac{d}{dx}\left( \int_{a}^{x} f(u)\,du\right)=f(x).$$
-```
-
-## Plots with Margin Notes
-
-Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here.
-If you'd like to place ancillary information in the margin without the sidenote mark (the superscript number), you can use the `margin_note()` function from **tufte** in an inline R expression. 
-
-
-
-```{r fig-main, fig.cap = "Some general comments about this plot. $500 Notice the dollar sign renders.", cache=TRUE, echo = TRUE}
-ggplot(diamonds, aes(cut, price)) + geom_boxplot()
-```
-
-
-```{marginfigure, echo = TRUE}
-Notice that there is no number preceding the note. $x \in [a, b]$有
-$$\frac{d}{dx}\left( \int_{a}^{x} f(u)\,du\right)=f(x).$$
-```
-
-# ROI
-
-Profit Profit Profit
-Profit Profit Profit
-Profit Profit Profit
-
 # Conclusion
 
-* 代码段选项
-* 代码段选项
-* 代码段选项
+* Point 1
 
-```{r bib, include=FALSE}
-# create a bib file for the R packages used in this document
-knitr::write_bib(c('base', 'rmarkdown'), file = 'skeleton.bib')
-```
+* Point 2
