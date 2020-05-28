@@ -32,9 +32,16 @@ options(htmltools.dir.version = FALSE)
 # Description
 
 
-`r newthought('Intro text here')` Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here Intro text here. In general,
-    \href{https://encoura.org/prospective-student-mindsets/}{{\color{blue}{\underline{Prospective Student Mindsets }}}} is put together by Encoura.
+`r newthought('Within the Encoura Data Lab tool')` we get access to data on student sentiment regarding marketing in higher education. 
 
+In order to make use of this information, I have been putting together a report that builds a persona of the students most likely to enroll at USM. 
+
+To do this, I had a discussion with our NRCCUA representative, Patricia Plourde. She urged me to make use of the Encoura data download of names we have purchased since the Data Lab platform went live in July 2019. In that dataset, each student is assigned a value that corresponds to one of the 6 student mindsets as defined in their documentation.   \href{https://encoura.org/prospective-student-mindsets/}{{\color{blue}{\underline{The definitions are linked here.}}}} The data provided at this link is also pasted into this report. 
+
+
+# Findings
+
+Because the mindset data has only been available to us since July, 2019, we are limited to the few records of applicants who have a mindset value assigned. We have 61 students who applied from the NRCCUA Seniors purchase. The mindset breakdown is shown below.  
 
 ```{r}
 Data_1 <- read.csv("C:/Users/christine.iyer/Box/Student_Sentiment/StudentSentiment/Data/20200423_Prospects_009762_SO-00176008_USM_Spring_2020 (1).csv", header = T, stringsAsFactors = F)
@@ -80,7 +87,6 @@ kable(trythis %>%
       arrange(desc(Apps)))
 ```
 
-# Findings
 
 
 
@@ -91,7 +97,9 @@ kable(trythis %>%
 
 
 
-# __Mindsets Defined__
+# __Mindsets Defined:__ 
+
+The information below is pasted from the Encoura website. It defines the various mindsets and offers information on how best to communicate with each one. 
 
 
 ## __Grad School Bound__: 10% (USM 33%)
@@ -238,7 +246,9 @@ __Opportunities for Support__
 
 # Other Findings
 
-Profit Profit Profit
+Below are some of the other findings available from the NRCCUA data downloads. 
+
+
 ```{r}
 kable(trythis %>% group_by(`Application Status` = App.Application.Status) %>% summarise(Apps =  n())%>% arrange(desc(Apps)))
 kable(trythis %>% group_by(State = State.Province) %>% summarise(Apps =  n())%>% arrange(desc(Apps)))
@@ -254,20 +264,9 @@ kable(trythis %>% group_by(`Academic Interest`=Academic.Interest.1) %>% summaris
 kable(trythis %>% group_by(`Career Interest` = Career.Interest.1) %>% summarise(Apps =  n()) %>% arrange(desc(Apps)))
 ```
 
-## Plots
-
-
-
-## Sidenotes
-
-
-
-If you'd like to place ancillary information in the margin without the sidenote mark (the superscript number), you can use the `margin_note()` function from **tufte** in an inline R expression. `r margin_note("This is a margin note.  Notice that there is no number preceding the note.")` This function does not process the text with Pandoc, so Markdown syntax will not work here. If you need to write anything in Markdown syntax, please use the `marginfigure` block described previously.
-
-
 
 # Conclusion
 
 * Point 1
 
-* Point 2
+
